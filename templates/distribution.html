@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table>
+
+    <tr>
+        <th>цвет каюты</th>
+        <th>Эмблема</th>
+    </tr>
+    <tr>
+        {% if male == "female" and age >= 21%}
+
+        <td bgcolor="#d2691e">
+        </td>
+        <td>
+            <img src="/static/img/female23Male20.jpg" height="250" width="370"/></td>
+        {% elif male == "female" and age < 21%}
+        <td bgcolor="#ff7f50">
+        </td>
+        <td>
+            <img src="/static/img/female20Male23.jpg" height="250" width="370"/></td>
+        {% elif male == "male" and age >= 21%}
+
+        <td bgcolor="aqua">
+        </td>
+        <td>
+            <img src="/static/img/female20Male23.jpg" height="250" width="370"/></td>
+        {% elif male == "male" and age < 21%}
+        <td bgcolor="#7fffd4">
+        </td>
+        <td>
+            <img src="/static/img/female23Male20.jpg" height="250" width="370"/></td>
+        {% endif %}
+    </tr>
+</table>
+{% endblock %}

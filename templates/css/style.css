@@ -1,0 +1,9 @@
+p.alert-danger{
+  color: red;
+}
+.center {
+    width: 200px; /* Ширина элемента в пикселах */
+    padding: 10px; /* Поля вокруг текста */
+    margin: auto; /* Выравниваем по центру */
+    background: wheat; /* Цвет фона */
+   }

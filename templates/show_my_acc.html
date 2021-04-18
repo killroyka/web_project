@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .center {
+    width: 200px; /* Ширина элемента в пикселах */
+    padding: 10px; /* Поля вокруг текста */
+    margin: auto; /* Выравниваем по центру */
+    background: wheat; /* Цвет фона */
+   }
+</style>
+
+<br>
+<div align="center" class="center">
+    <h4> {{ current_user.name }} {{ current_user.surname }}</h4>
+    <p></p>
+
+
+</div>
+{% endblock %}

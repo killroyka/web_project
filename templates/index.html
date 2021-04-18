@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .center {
+    width: 200px; /* Ширина элемента в пикселах */
+    padding: 40px; /* Поля вокруг текста */
+    margin: auto; /* Выравниваем по центру */
+    background: wheat; /* Цвет фона */
+   }
+</style>
+<div class="center">
+    {% for fun in funs %}
+        <table>
+            <tr>
+                <td><h3>{{ fun.name }} {{fun.id}}</h3></td>
+            </tr>
+            <tr>
+                <td>{{ fun.text }}</td>
+            </tr>
+        </table>
+    {% endfor %}
+</div>
+{% endblock %}
