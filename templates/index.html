@@ -2,22 +2,33 @@
 {% block content %}
 <style>
     .center {
-    width: 200px; /* Ширина элемента в пикселах */
-    padding: 40px; /* Поля вокруг текста */
-    margin: auto; /* Выравниваем по центру */
-    background: wheat; /* Цвет фона */
-   }
+        width: 200px; /* Ширина элемента в пикселах */
+        padding: 20px; /* Поля вокруг текста */
+        margin: auto; /* Выравниваем по центру */
+        background: wheat; /* Цвет фона */
+    }
+    .center_like {
+        width: 200px; /* Ширина элемента в пикселах */
+        padding: 40px; /* Поля вокруг текста */
+        margin: auto; /* Выравниваем по центру */
+        background: wheat; /* Цвет фона */
+    }
 </style>
 <div class="center">
     {% for fun in funs %}
-        <table>
-            <tr>
-                <td><h3>{{ fun.name }} {{fun.id}}</h3></td>
-            </tr>
-            <tr>
-                <td>{{ fun.text }}</td>
-            </tr>
-        </table>
+    <table>
+        <tr>
+            <td><h3>{{ fun.name }} {{fun.id}}</h3></td>
+        </tr>
+        <tr>
+            <td>{{ fun.text }}</td>
+            <td>
+                <form action="{{ url_for('like_action', fun_id=fun.id, action='like') }}">
+                    <button>{{fun.likes}} Like</button>
+                </form>
+            </td>
+        </tr>
+    </table>
     {% endfor %}
 </div>
 {% endblock %}

@@ -16,7 +16,7 @@ class RegisterForm(FlaskForm):
 
 class AddFunForm(FlaskForm):
     name = StringField("Название развлечения")
-    text = StringField("Описание развлечения")
+    text = TextAreaField("Описание развлечения")
     submit = SubmitField('Создать')
 
 class LoginForm(FlaskForm):

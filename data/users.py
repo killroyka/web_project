@@ -19,7 +19,9 @@ class User(SqlAlchemyBase, UserMixin):
                               index=True, unique=True, nullable=True)
     modified_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
     password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
 
-
-    def check_password(self, a):
-        return a == self.password
+    def check_password(self, password):
+        print(self.password)
+        return check_password_hash(self.password, password)

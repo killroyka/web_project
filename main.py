@@ -6,6 +6,8 @@ from data.moods import Mood
 from data.funs import Fun
 from forms.user import RegisterForm, LoginForm, AddFunForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from io import BytesIO
+from PIL import Image
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -44,10 +46,13 @@ def reqister():
             surname=form.surname.data,
             age=form.age.data,
             email=form.email.data,
-            password=form.password.data
         )
+        user.set_password(form.password.data)
+
         db_sess.add(user)
         db_sess.commit()
+        f = request.files['files']
+        f.save(f"users_image/{user.id}.jpg")
         return redirect('/login')
     print("igushufghbdusfhogubd")
     return render_template('register.html', title='Регистрация', form=form)
@@ -57,18 +62,22 @@ def reqister():
 def glav():
     db_sess = db_session.create_session()
     funs = db_sess.query(Fun).all()
-    return render_template('index.html',funs=funs)
+    return render_template('index.html', funs=funs)
+
+
 @app.route("/addfun", methods=['GET', 'POST'])
 def addfun():
     form = AddFunForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         fun = Fun(name=form.name.data,
-                  text=form.text.data)
+                  text=form.text.data,
+                  owner_id=current_user.id)
         db_sess.add(fun)
         db_sess.commit()
         return redirect('/')
     return render_template("addFun.html", form=form)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -92,6 +101,22 @@ def logout():
     return redirect("/")
 
 
+@app.route('/like/<int:fun_id>/<action>')
+@login_required
+def like_action(fun_id, action):
+    db_sess = db_session.create_session()
+    fun = db_sess.query(Fun).filter(Fun.id == fun_id).first()
+    if action == "like" and str(current_user.id) not in fun.who_like.split():
+        fun.likes += 1
+        fun.who_like += f" {current_user.id}"
+    else:
+        fun.likes -= 1
+        fun.who_like = fun.who_like.replace(str(current_user.id), "")
+    db_sess.commit()
+    print(fun.likes, fun.who_like.split())
+    return redirect(request.referrer)
+
+
 def add_user(name, surname, age, position, speciality, address, email):
     db_sess = db_session.create_session()
     user = User()
@@ -104,6 +129,38 @@ def add_user(name, surname, age, position, speciality, address, email):
     user.email = email
     db_sess.add(user)
     db_sess.commit()
+
+
+@app.route('/sample_file_upload', methods=['POST', 'GET'])
+def sample_file_upload():
+    if request.method == 'GET':
+        return f'''<!doctype html>
+                        <html lang="en">
+                          <head>
+                            <meta charset="utf-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                             <link rel="stylesheet"
+                             href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+                             integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+                             crossorigin="anonymous">
+                           
+                            <title>Пример загрузки файла</title>
+                          </head>
+                          <body>
+                            <h1>Загрузим файл</h1>
+                            <form method="post" enctype="multipart/form-data">
+                               <div class="form-group">
+                                    <label for="photo">Выберите файл</label>
+                                    <input type="file" class="form-control-file" id="photo" name="file">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Отправить</button>
+                            </form>
+                          </body>
+                        </html>'''
+    elif request.method == 'POST':
+        f = request.files['file']
+        f.save("test.png")
+        return "Форма отправлена"
 
 
 def main():

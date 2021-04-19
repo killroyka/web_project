@@ -10,7 +10,9 @@ class Fun(SqlAlchemyBase):
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
+    owner_id = sqlalchemy.Column(sqlalchemy.Integer)
     name = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     text = sqlalchemy.Column(sqlalchemy.String, nullable=False)
-    likes = sqlalchemy.Column(sqlalchemy.Integer)
+    likes = sqlalchemy.Column(sqlalchemy.Integer, default=0)
+    who_like = sqlalchemy.Column(sqlalchemy.String, nullable=True, default=" ")
 
