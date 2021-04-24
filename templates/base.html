@@ -57,6 +57,11 @@
     <form action="/interview">
         <button>пройти опрос настроения</button>
     </form>
+    {% if not current_user.is_confirmed%}
+    <form action="/get_code/{{current_user.id}}">
+        <button>Потдвердить почту</button>
+    </form>
+    {% endif %}
     {% else %}
     <form action="/login">
         <button>Войти</button>

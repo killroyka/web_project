@@ -27,49 +27,49 @@ api = Api(app)
 api.add_resource(RESTfulAPI.FunResource, '/api/funs/<int:news_id>')
 api.add_resource(RESTfulAPI.FunsListResource, '/api/fun')
 
+#    #    ###   #       #       ######  ####### #     # #    #     #
+#   #      #    #       #       #     # #     #  #   #  #   #     # #
+#  #       #    #       #       #     # #     #   # #   #  #     #   #
+###        #    #       #       ######  #     #    #    ###     #     #
+#  #       #    #       #       #   #   #     #    #    #  #    #######
+#   #      #    #       #       #    #  #     #    #    #   #   #     #
+#    #    ###   ####### ####### #     # #######    #    #    #  #     #
+# приступим к комментированию
 
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
 
-
+# это функция для отправки кода потдверждения почты
 def send(code, email):
     msg = MIMEMultipart()
-
     message = f"Hello, this is your code: \n{code}"
-
     password = "killroykasakhabiev"
     msg['From'] = "killerbeesexy@gmail.com"
     msg['To'] = email
     msg['Subject'] = "Subscription"
-
     msg.attach(MIMEText(message, 'plain'))
-
     server = smtplib.SMTP('smtp.gmail.com: 587')
-
     server.starttls()
-
     server.login(msg['From'], password)
-
     server.sendmail(msg['From'], msg['To'], msg.as_string())
-
     server.quit()
-
     print("successfully sent email to %s:" % (msg['To']))
-    return redirect('/')
 
 
 @app.route("/get_code/<int:user_id>")
 def get_code(user_id):
     global code
+    # аддрес на который перенаправляет регистрация для получения кода
+    # поле происходит перенаправления на ссылку потверждения
     db_sess = db_session.create_session()
     user = db_sess.query(User).get(user_id)
     code = random.randint(10000, 99999)
     send(code, user.email)
     return redirect(f"/confirm/{user_id}")
 
-
+# это аддрес прохождения тестирования
 @app.route('/interview', methods=['GET', 'POST'])
 def get_interview():
     form = CheckPsycho()
@@ -87,7 +87,7 @@ def get_interview():
         return redirect(f"/acc/{current_user.id}")
     return render_template("interview.html", form=form)
 
-
+# аддрес потдверждения почты
 @app.route('/confirm/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def confirm(user_id):
@@ -106,7 +106,7 @@ def confirm(user_id):
         return redirect('/')
     return render_template("ConfirmMail.html", form=form)
 
-
+# аддрес показывающий основную информацию о пользователе
 @app.route('/acc/<int:user_id>')
 def show_my_acc(user_id):
     db_sess = db_session.create_session()
@@ -122,7 +122,7 @@ def show_my_acc(user_id):
     return render_template("show_my_acc.html", user_id=str(user_id), user=db_sess.query(User).get(user_id), size=size,
                            interviews=db_sess.query(Interview).filter(Interview.owner_id == user_id).all(), len=len(db_sess.query(Interview).filter(Interview.owner_id == user_id).all()))
 
-
+# регистрация
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
     global code
@@ -153,13 +153,11 @@ def reqister():
         f.save(f"static/images/users_image/{user.id}.jpg")
         db_sess = db_session.create_session()
         user = db_sess.query(User).get(user.id)
-        code = random.randint(10000, 99999)
-        send(code, user.email)
-        return redirect(f'/get_code/{user.id}')
+        return redirect(f'/login')
     print("igushufghbdusfhogubd")
     return render_template('register.html', title='Регистрация', form=form)
 
-
+# главная страница сайта
 @app.route("/", methods=["GET", 'POST'])
 def glav():
     db_sess = db_session.create_session()
@@ -169,6 +167,7 @@ def glav():
     print(admins)
     return render_template('index.html', funs=funs, admins=admins)
 
+# изменение пользователя
 @app.route("/edituser/<int:user_id>")
 def edituser(user_id):
     form = RegisterForm()
@@ -210,13 +209,13 @@ def edituser(user_id):
                            admins=admins
                            )
 
-
+# ошибка 404
 @app.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
     return "404 not found"
 
-
+# изменение развлечения
 @app.route('/editfun/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_funs(id):
@@ -259,7 +258,7 @@ def edit_funs(id):
                            admins=admins
                            )
 
-
+# добавление развлечения
 @app.route("/addfun", methods=['GET', 'POST'])
 @login_required
 def addfun():
@@ -274,7 +273,7 @@ def addfun():
         return redirect('/')
     return render_template("addFun.html", form=form)
 
-
+# вход в систему
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -289,7 +288,7 @@ def login():
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
-
+# выход из системы
 @app.route('/logout')
 @login_required
 def logout():
