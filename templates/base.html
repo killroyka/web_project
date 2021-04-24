@@ -47,12 +47,15 @@
     <form action="/logout">
         <button>Выйти из аккаунта</button>
     </form>
-    <form action="/myacc">
+    <form action="/acc/{{current_user.id}}">
         <button>Мой акаунт</button>
     </form>
 
     <form action="/addfun">
         <button>Добавить развлечение</button>
+    </form>
+    <form action="/interview">
+        <button>пройти опрос настроения</button>
     </form>
     {% else %}
     <form action="/login">

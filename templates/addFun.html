@@ -9,7 +9,7 @@
     {{ form.hidden_tag() }}
     <p>
         {{ form.name.label }}<br>
-        {{ form.name(class="form-control", type="string") }}<br>
+        {{ form.name(class="form-control", type="string", maxlength="20") }}<br>
         {% for error in form.name.errors %}
             <p class="alert alert-danger" role="alert">
                 {{ error }}
@@ -18,7 +18,7 @@
     </p>
     <p>
         {{ form.text.label }}<br>
-        {{ form.text(class="form-control", type="string", width=100, height = 100, maxlength=50) }}<br>
+        {{ form.text(class="form-control", type="string", width=100, height = 100,  maxlength="150") }}<br>
         {% for error in form.text.errors %}
             <p class="alert alert-danger" role="alert">
                 {{ error }}

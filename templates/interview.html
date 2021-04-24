@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+<br>
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.working_capacity.label }}<br>
+        {{ form.working_capacity(class="form-control") }}<br>
+        {% for error in form.working_capacity.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    <p>
+        {{ form.happiness.label }}<br>
+        {{ form.happiness(class="form-control") }}<br>
+        {% for error in form.happiness.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+        {% endfor %}
+
+    <p>
+        {{ form.health.label }}<br>
+        {{ form.health(class="form-control") }}<br>
+        {% for error in form.health.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>
+        {{ form.text.label }}<br>
+        {{ form.text(class="form-control", type="string", width=100, height = 100,  maxlength="50") }}<br>
+        {% for error in form.text.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+</form>
+{% endblock %}

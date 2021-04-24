@@ -2,18 +2,100 @@
 {% block content %}
 <style>
     .center {
-    width: 200px; /* Ширина элемента в пикселах */
-    padding: 10px; /* Поля вокруг текста */
-    margin: auto; /* Выравниваем по центру */
-    background: wheat; /* Цвет фона */
-   }
+        width: 200px; /* Ширина элемента в пикселах */
+        padding: 10px; /* Поля вокруг текста */
+        margin: auto; /* Выравниваем по центру */
+        background: wheat; /* Цвет фона */
+    }
 </style>
-
 <br>
-<div align="center" class="center">
-    <h4> {{ current_user.name }} {{ current_user.surname }}</h4>
-    <p></p>
+<br>
+<table>
+    <tr>
+        <td><img src='{{ url_for("static", filename="../static/images/users_image/" + user_id + ".jpg")}}'
+                 height="{{size[1]}}" width="{{size[0]}}" align="left"/></td>
+        <td>
+            <table>
+                <tr>
+                    <td>
+                        <p> имя: {{ user.name }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Фамиля: {{ user.surname }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Ему {{ user.age}} лет</p>
+                    </td>
+                </tr>
+                {% if current_user.id != user_id %}
+                <tr>
+                    <td>
+                        <form action="/edituser/{{user_id}}">
+                            <button>изменить профиль</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endif %}
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p>{% autoescape false %}
+                {{user.about}}
+                {% endautoescape %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            {% if len != 0%}
+            <table bgcolor="#90ee90" border="1px">
+                <tr>
+                    <th>
+                        Дата прохождения опроса
+                    </th>
+                    <th>
+                        Работоспособность
+                    </th>
+                    <th>
+                        Счастье
+                    </th>
+                    <th>
+                        Здоровье
+                    </th>
+                    <th>
+                        Краткое описание состояния
+                    </th>
+                </tr>
+                {% for interveiw in interviews%}
+                <tr>
+                    <td align="center">
+                        {{interveiw.modified_date.date()}}
+                    </td>
+                    <td align="center">
+                        {{interveiw.working_capacity}}
+                    </td>
+                    <td align="center">
+                        {{interveiw.happiness}}
+                    </td>
+                    <td align="center">
+                        {{interveiw.health}}
+                    </td>
+                    <td align="center">
+                        {{interveiw.text}}
+                    </td>
+                </tr>
+                {% endfor %}
 
+            </table>
+            {% endif %}
+        </td>
+    </tr>
+</table>
 
-</div>
+<p></p>
 {% endblock %}

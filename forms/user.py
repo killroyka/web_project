@@ -11,13 +11,15 @@ class RegisterForm(FlaskForm):
     surname = StringField('Фамилия пользователя', validators=[DataRequired()])
     name = StringField('Имя пользователя', validators=[DataRequired()])
     age = IntegerField("Возраст Пользователя", validators=[DataRequired()])
-    addres = StringField("Адрес пользователя")
+    about = TextAreaField("Опиши себя(2-3 предложения)")
     submit = SubmitField('Создать')
+
 
 class AddFunForm(FlaskForm):
     name = StringField("Название развлечения")
     text = TextAreaField("Описание развлечения")
     submit = SubmitField('Создать')
+
 
 class LoginForm(FlaskForm):
     email = EmailField('Почта', validators=[DataRequired()])
@@ -25,5 +27,17 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
 
+
+class ConfirmMail(FlaskForm):
+    code = IntegerField("код из сообщения на твоей почте")
+    submit = SubmitField('проврить')
+
+
+class CheckPsycho(FlaskForm):
+    working_capacity = StringField("оцени свою работоспособность (от 0 до 10)")
+    happiness = StringField("насколько ты счастлив(-а) (от 0 до 10)")
+    health = StringField("Сдоров(-а) ли ты (от 0 до 10)")
+    text = TextAreaField("Опиши свое состояние")
+    submit = SubmitField('проврить')
 
 

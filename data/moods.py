@@ -1,11 +1,12 @@
 import datetime
 import sqlalchemy
 from sqlalchemy import orm
+from sqlalchemy_serializer import SerializerMixin
 
 from .db_session import SqlAlchemyBase
 
 
-class Mood(SqlAlchemyBase):
+class Mood(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'moods'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,

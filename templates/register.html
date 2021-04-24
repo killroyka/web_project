@@ -2,7 +2,7 @@
 
 {% block content %}
 <div style="margin-left: 20px">
-    <h1>Регистрация</h1>
+    <h1>{{ title}}</h1>
     <form action="" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <p>
@@ -61,15 +61,14 @@
         {% endfor %}
         </p>
 
-
         <p>
-            {{ form.addres.label }}<br>
-            {{ form.addres(class="form-control") }}<br>
-            {% for error in form.addres.errors %}
+            {{ form.about.label }}<br>
+            {{ form.about(class="form-control") }}<br>
+            {% for error in form.about.errors %}
         <p class="alert alert-danger" role="alert">
             {{ error }}
-
-            {% endfor %}
+        </p>
+        {% endfor %}
         </p>
         <input type='file' name="files" id="uploadjpg">
             <button type="submit" class="btn btn-primary">Отправить</button>

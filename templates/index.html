@@ -2,11 +2,12 @@
 {% block content %}
 <style>
     .center {
-        width: 200px; /* Ширина элемента в пикселах */
+        width: 400px; /* Ширина элемента в пикселах */
         padding: 20px; /* Поля вокруг текста */
         margin: auto; /* Выравниваем по центру */
         background: wheat; /* Цвет фона */
     }
+
     .center_like {
         width: 200px; /* Ширина элемента в пикселах */
         padding: 40px; /* Поля вокруг текста */
@@ -14,18 +15,33 @@
         background: wheat; /* Цвет фона */
     }
 </style>
-<div class="center">
+<br>
+<br>
+
+<div>
     {% for fun in funs %}
-    <table>
+    <table BORDER="1PX" class="center">
         <tr>
-            <td><h3>{{ fun.name }} {{fun.id}}</h3></td>
+            <td><h3>{{ fun.name }}</h3></td>
+            <td>
+                {% if current_user.is_authenticated%}
+                    {% if current_user.id in admins or current_user.id == fun.owner_id %}
+                    <form action="{{ url_for('edit_funs', id=fun.id) }}">
+                        <button>изменить запись</button>
+                    </form>
+                    {% endif %}
+                {% endif %}
+
+            </td>
         </tr>
         <tr>
             <td>{{ fun.text }}</td>
             <td>
+                {% if current_user.is_authenticated %}
                 <form action="{{ url_for('like_action', fun_id=fun.id, action='like') }}">
                     <button>{{fun.likes}} Like</button>
                 </form>
+                {% endif %}
             </td>
         </tr>
     </table>
