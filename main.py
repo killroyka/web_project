@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, redirect, make_response, request, abort
 from data import db_session
 import datetime
@@ -330,7 +332,8 @@ def main():
     global admins
     admins = [1]
     db_session.global_init("db/blogs.db")
-    app.run(port=5001, host='127.0.0.1')
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
 
 
 if __name__ == '__main__':
